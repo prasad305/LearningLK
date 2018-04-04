@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head itemscope="" itemtype="http://schema.org/WebSite">
+    <meta charset="utf-8">
+    <meta name="dc.date" scheme="iso8601" content="">
+    <meta name="dc.language" scheme="rfc1766" content="en-US">
+    <meta name="dc.rights" content="© Copyright The Weather Channel, LLC 2016">
+    <title data-react-helmet=""></title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+        .login-container {
+            max-width: 400px;
+            margin: 60px auto 0;
+        }
+
+        .error {
+            color: tomato;
+            font-size: 12px;
+            padding-top: 4px
+        }
+
+        .btn btn-go {
+            background-color: #db473b;
+        }
+
+        .btn btn-facebook {
+            background-color: #3b5999;
+        }
+
+
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div ng-app="myApp" ng-controller="myController" class="container">
+        <form name="myForm">
+            <div class="login-container">
+                <h1>Welcome to Tutor's Corner</h1>
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" name="email" ng-model="user.username" required class="form-control">
+                            <div ng-show="myForm.email.$error.email" class="error">Invalid email!</div>
+                            <div ng-show="myForm.email.$error.required &amp;&amp; myForm.email.$touched" class="error">
+                                Required!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" name="pass" ng-model="user.password" required class="form-control">
+                            <div ng-show="myForm.pass.$error.required &amp;&amp; myForm.pass.$touched" class="error">
+                                Required!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <button ng-click="authenticate()" ng-disabled="myForm.$invalid"
+                                    class="btn btn-success pull-right">Login
+                            </button>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div ng-show="showError" class="alert alert-danger">Wrong credentials!</div>
+                        <div ng-show="showSuccess" class="alert alert-success">Login Successful!</div>
+                    </div>
+                </div>
+
+                <label>
+                    <input type="checkbox"> Keep me signed in
+                </label>
+
+                <p class="footer-paragraph">Did you forget
+                    <a onclick="forgetPassword()"
+                       style="cursor: pointer; text-decoration: none; color: #7e57c2; font-weight: 400;">your
+                        password?</a></p>
+
+
+                <div class="col-xs-3 col-md-offset-1 rnright-login cols" id="slogin-view">
+
+                    <h4 class="login-title">Log in with</h4>
+
+                    <div id="socail-button">
+                        <div class="sign-btn-area">
+                            <a href="https://www.facebook.com/v2.8/dialog/oauth?state=49cfa6a21af9a450b898c28625ef1d85&amp;scope=public_profile%2Cemail&amp;response_type=code&amp;approval_prompt=auto&amp;redirect_uri=https%3A%2F%2Fguru.lk%2Fauth%2Fgoogleoauth2%2Ffacebook_redirect.php&amp;client_id=448237355341985"
+                               type="button" class="btn btn-facebook">
+                                <img src="https://guru.lk/theme/fop/layout/common/images/fb.jpg"> Facebook</a>
+                            <a href="https://accounts.google.com/o/oauth2/auth?state=b6e884d30fa67c129d3a0147cea583c6&amp;scope=email%20openid%20profile&amp;response_type=code&amp;approval_prompt=auto&amp;redirect_uri=https%3A%2F%2Fguru.lk%2Fauth%2Fgoogleoauth2%2Fgoogle_redirect.php&amp;client_id=787057348987-vrd2tkr22n1sq183p2815bb3d793ro7f.apps.googleusercontent.com&amp;hd=https%3A%2F%2Fguru.lk&amp;authuser=-1"
+                               type="button" class="btn btn-go">
+                                <img src="https://guru.lk/theme/fop/layout/common/images/gplus.jpg"> Google Plus</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script src="js/jquery-3.2.1.min.js"></script>
+<script>
+    var app = angular.module('myApp', []);
+
+    app.controller('myController', function ($scope) {
+
+        $scope.user = {'username': '', 'password': ''};
+
+        //----- Users json
+        var validUsers = [
+            {'username': 'chandler@friends.com', 'password': '1234'},
+            {'username': 'ross@friends.com', 'password': '1234'},
+            {'username': 'joey@friends.com', 'password': '1234'},
+            {'username': 'rechal@friends.com', 'password': '1234'}
+        ];
+
+        $scope.showError = false; // set Error flag
+        $scope.showSuccess = false; // set Success Flag
+
+        //------- Authenticate function
+        $scope.authenticate = function () {
+            var flag = false;
+
+            for (var i in validUsers) { // loop on users array
+                if ($scope.user.username == validUsers[i].username && $scope.user.password == validUsers[i].password) {
+                    flag = true;
+                    break;
+                }
+                else {
+                    flag = false;
+                }
+            }
+
+            //-------- set error or success flags
+            if (flag) {
+                $scope.showError = false;
+                $scope.showSuccess = true;
+            }
+            else {
+                $scope.showError = true;
+                $scope.showSuccess = false;
+            }
+
+
+        }
+
+    });
+</script>
+
+
+</body>
+</html>
